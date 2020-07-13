@@ -444,7 +444,7 @@ def goods_func_exec(update, context):
                        (priority, category_name, goods_name))
         conn.commit()
         conn.close()
-        update.message.reply_text(' {} 下 {} 使用方法更新成功，修改后的优先级为：{}'.format(category_name, goods_name, priority))
+        update.message.reply_text(' {} 下 {} 展示优先级更新成功，修改后的优先级为：{}'.format(category_name, goods_name, priority))
         return ConversationHandler.END
 
 
@@ -567,7 +567,7 @@ def card_func_step2(update, context):
         func = context.user_data['func']
         if func == '添加卡密':
             query.edit_message_text(
-                text='请发送文件名为: *分类名|商品名.txt* 的TXT文件\n'
+                text='请发送文件名为: *分类名｜商品名.txt* 的TXT文件（中文分隔符）\n'
                      '文件内容为卡密，一行一个\n',
                 parse_mode='Markdown', )
             return ADMIN_CARD_STEP2
