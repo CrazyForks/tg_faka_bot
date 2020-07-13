@@ -10,27 +10,33 @@ from alipay import AliPay
 
 # 配置区域
 
+# appid
+appid="2017030405672123",
+
 # 应用私钥
 app_private_key_string = "-----BEGIN RSA PRIVATE KEY-----\n填写自己生成的应用密钥\n-----END RSA PRIVATE KEY-----"
 
 # 支付宝公钥，验证支付宝回传消息使用，不是你自己的公钥,
 alipay_public_key_string = "-----BEGIN PUBLIC KEY-----\n填写支付宝公钥\n-----END PUBLIC KEY-----"
 
-# 示例格式
+# 示例格式 注意\n
 # alipay_public_key_string = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw9QbJi++cm2HjinPpllj3Hmep8nxO9MVu0BTSP1XM1wF666g6sTwQ0VXyRJENpYEs0KFE/XnMKilV/+uQY7xH4SqcdX2T4C5DkiWJ4egD2Tk3yLH6fjq7TqCsMqG3osfk6U93H+XdiWKKff+nwQ6LnUIEYWoMIh/fyqTYtlKzBTUg8nJWoqfkspFWlt69PrbosbAFWY7vp+3CapO/o4Qw+thuhGKAvEZWmNy3hUnnThStos+T8qI/Qqs5f9zb9wIDAQAB\n-----END PUBLIC KEY-----"
 
 # 订单超时时间
 # m：分钟，只可为整数，建议与config配置的超时时间一致
 PAY_TIMEOUT = '5m'
 
-
-alipay = AliPay(
-    appid="2017030405672108",
-    app_notify_url=None,  # 默认回调url
-    app_private_key_string=app_private_key_string,
-    alipay_public_key_string=alipay_public_key_string,
-    sign_type="RSA2",
-)
+try:
+    alipay = AliPay(
+        appid=appid,
+        app_notify_url=None,  # 默认回调url，不要改
+        app_private_key_string=app_private_key_string,
+        alipay_public_key_string=alipay_public_key_string,
+        sign_type="RSA2",
+    )
+except Exception as e:
+    print(e)
+    print('Alipay对象创建失败，请检查公钥和密钥是否配置正确')
 
 
 def submit(price, subject, trade_id):
@@ -41,6 +47,7 @@ def submit(price, subject, trade_id):
             total_amount=price,
             qr_code_timeout_express=PAY_TIMEOUT
         )
+        print(order_string)
         if order_string['msg'] == 'Success':
             pr_code = order_string['qr_code']
             print(pr_code)
@@ -82,4 +89,7 @@ def query(out_trade_no):
 
 
 def cancel(out_trade_no):
-    alipay.api_alipay_trade_cancel(out_trade_no=out_trade_no)
+    try:
+        alipay.api_alipay_trade_cancel(out_trade_no=out_trade_no)
+    except Exception as e:
+        print(e)
