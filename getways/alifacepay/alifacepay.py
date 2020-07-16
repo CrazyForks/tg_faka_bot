@@ -11,7 +11,7 @@ from alipay import AliPay
 # 配置区域
 
 # appid
-appid="2017030405672123",
+appid="2017030405672123"
 
 # 应用私钥
 app_private_key_string = "-----BEGIN RSA PRIVATE KEY-----\n填写自己生成的应用密钥\n-----END RSA PRIVATE KEY-----"
